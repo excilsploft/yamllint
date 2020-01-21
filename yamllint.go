@@ -13,6 +13,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+var (
+	verbose = flag.Bool("v", false, "show more than just errors")
+)
+
 func main() {
 
 	flag.Usage = usage
@@ -46,7 +50,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: yamllint [path ...]\n")
+	fmt.Fprintf(os.Stderr, "usage: yamllint [flags] [path ...]\n")
 }
 
 func processFile(filename string, in io.Reader, out io.Writer) error {
@@ -74,17 +78,18 @@ func processFile(filename string, in io.Reader, out io.Writer) error {
 		return err
 	}
 
-	switch output.(type) {
-	case []interface{}:
-		fmt.Fprintf(out, "%s\t Top Level is a list, this is okay\n", filename)
-	case map[string]interface{}:
-		fmt.Fprintf(out, "%s\t Top Level is an object, this is okay\n", filename)
-	case string:
-		fmt.Fprintf(out, "%s\t Top Level is a string, this is interesting\n", filename)
-	default:
-		fmt.Fprintf(out, "%s\t Top Level does not look like a yaml file, might want to check this\n", filename)
+	if *verbose {
+		switch output.(type) {
+		case []interface{}:
+			fmt.Fprintf(out, "%s\t Top Level is a list, this is okay\n", filename)
+		case map[string]interface{}:
+			fmt.Fprintf(out, "%s\t Top Level is an object, this is okay\n", filename)
+		case string:
+			fmt.Fprintf(out, "%s\t Top Level is a string, this is interesting\n", filename)
+		default:
+			fmt.Fprintf(out, "%s\t Top Level does not look like a yaml file, might want to check this\n", filename)
+		}
 	}
-
 	return nil
 }
 
