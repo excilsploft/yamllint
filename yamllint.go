@@ -33,13 +33,13 @@ func main() {
 		path := flag.Arg(i)
 		switch dir, err := os.Stat(path); {
 		case err != nil:
-			fmt.Fprintf(os.Stderr, "%s\n", err)
+			fmt.Fprintf(os.Stderr, "%s", err)
 			os.Exit(1)
 		case dir.IsDir():
 			traverseDir(path)
 		default:
 			if err := processFile(path, nil, os.Stdout); err != nil {
-				fmt.Fprintf(os.Stderr, "%s\n", err)
+				fmt.Fprintf(os.Stderr, "%s", err)
 				os.Exit(1)
 			}
 		}
@@ -68,26 +68,24 @@ func processFile(filename string, in io.Reader, out io.Writer) error {
 
 	data, err := ioutil.ReadAll(in)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error Reading from %s: %s\n", filename, err)
-		return err
+		return fmt.Errorf("Error Reading from %s: %s\n", filename, err)
 	}
 
 	err = yaml.NewDecoder(bytes.NewBuffer(data)).Decode(&output)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "There is a serious issue with your YAML: %s see the error:\n", filename)
-		return err
+		return fmt.Errorf("There is a serious issue with your YAML: %s see the error: %s\n", filename, err)
 	}
 
 	if *verbose {
 		switch output.(type) {
 		case []interface{}:
-			fmt.Fprintf(out, "%s\t Top Level is a list, this is okay\n", filename)
+			fmt.Fprintf(out, "%s\tTop Level is a list, this is okay\n", filename)
 		case map[string]interface{}:
-			fmt.Fprintf(out, "%s\t Top Level is an object, this is okay\n", filename)
+			fmt.Fprintf(out, "%s\tTop Level is an object, this is okay\n", filename)
 		case string:
-			fmt.Fprintf(out, "%s\t Top Level is a string, this is interesting\n", filename)
+			fmt.Fprintf(out, "%s\tTop Level is a string, this is interesting\n", filename)
 		default:
-			fmt.Fprintf(out, "%s\t Top Level does not look like a yaml file, might want to check this\n", filename)
+			fmt.Fprintf(out, "%s\tTop Level does not look like a yaml file, might want to check this\n", filename)
 		}
 	}
 	return nil

@@ -9,10 +9,10 @@ build: $(source)
 
 .PHONY: test
 test: $(test_source)
-	go test
+	go test $^
 
 .PHONY: install
-install: $(soruce)
+install: $(source)
 	go install 
 
 clean: $(output)
