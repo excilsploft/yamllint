@@ -9,7 +9,7 @@ build: $(source)
 
 .PHONY: test
 test: $(test_source)
-	go test $^
+	go test -v 
 
 .PHONY: install
 install: $(source)
