@@ -1,0 +1,16 @@
+# ignore everything
+*
+# ignore test folder
+./test/*
+
+# ignore yaml files
+*.yaml
+*.yml
+
+# unignore anything with an extension and also uningore specific extensionless files
+!*.*
+./test/*
+!Jenkinsfile
+!Dockerfile
+!Makefile
+

@@ -32,7 +32,7 @@ func testProcessFile(t *testing.T) {
 		in := strings.NewReader(v.data)
 		var buf bytes.Buffer
 
-		err := processFile(in, &buf)
+		err := processFile("stdin", in, &buf)
 		if err != nil {
 			t.Error(err)
 		}
