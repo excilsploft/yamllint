@@ -30,8 +30,10 @@ jobs:
             dep ensure
         fi
 
-    - name: Build
-      run: make build .
-
     - name: Test
-      run: make test .
+      run: make test
+
+    - name: Build
+      run: make build
+
+
