@@ -50,7 +50,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: yamllint [flags] [path ...]\n")
+	fmt.Fprintf(os.Stderr, "usage: yamllint [-v] [path ...]\n")
 }
 
 func processFile(filename string, in io.Reader, out io.Writer) error {
@@ -73,7 +73,8 @@ func processFile(filename string, in io.Reader, out io.Writer) error {
 
 	err = yaml.NewDecoder(bytes.NewBuffer(data)).Decode(&output)
 	if err != nil {
-		return fmt.Errorf("There is a serious issue with your YAML: %s see the error: %s\n", filename, err)
+		fmt.Fprintf(out, "%s\tThere is a serious issue with your YAML: %s\n", filename, err)
+		return nil
 	}
 
 	if *verbose {
@@ -105,8 +106,9 @@ func visitFile(path string, f os.FileInfo, err error) error {
 	}
 
 	if err != nil && !os.IsNotExist(err) {
-		return err
+		fmt.Fprintf(os.Stdout, "%s", err)
 	}
+
 	return nil
 }
 

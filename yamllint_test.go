@@ -52,7 +52,7 @@ func TestErrorProcessFile(t *testing.T) {
 	}{
 		{
 			"---\n\nabe:\n  ln: lincoln\n\nabe:\n  ln: simpson",
-			"There is a serious issue with your YAML: stdin see the error: yaml: unmarshal errors:\n  line 6: mapping key \"abe\" already defined at line 3\n",
+			"stdin\tThere is a serious issue with your YAML: yaml: unmarshal errors:\n  line 6: mapping key \"abe\" already defined at line 3\n",
 		},
 	}
 
@@ -61,12 +61,13 @@ func TestErrorProcessFile(t *testing.T) {
 		in := strings.NewReader(v.data)
 		var buf bytes.Buffer
 
-		err := processFile("stdin", in, &buf)
-		got := []byte(err.Error())
+		processFile("stdin", in, &buf)
+		//got := []byte(err.Error())
+		got := buf.Bytes()
 		wanted := []byte(v.resp)
 
 		if !bytes.Equal(got, wanted) {
-			t.Errorf("\nwanted: %s\ngot   : %s\n", wanted, got)
+			t.Errorf("\nwanted: %s\ngot: %s\n", wanted, got)
 		}
 	}
 
