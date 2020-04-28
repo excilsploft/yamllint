@@ -21,3 +21,4 @@ not verbose
 some directory or directories filled with yaml (this recusively descends into it)
 	`yamllint ./some_directory/`
 
+verbosity flag will show each file processed
