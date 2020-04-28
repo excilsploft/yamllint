@@ -1,6 +1,6 @@
 # yamllint
 
-A (GO)[https://golang.org/] based simple cli app that attempts to verify a YAML file is valid.
+A [GO](https://golang.org/) based simple cli app that attempts to verify a YAML file is valid.
 
 
 This does not verify the "Schema" of a YAML file that would difficult without a defined Schema, what this does is simply take a yaml file in StdIn or traverses a path for YAML files and attempt to open
