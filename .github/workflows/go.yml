@@ -2,8 +2,10 @@ name: Go
 
 on:
   push:
+    branches:
+      - master
     tags:
-      - v1
+      - v1.1
 
 jobs:
 
